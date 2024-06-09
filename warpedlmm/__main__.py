@@ -13,15 +13,15 @@
 # limitations under the License.
 
 
-import warpedlmm
+from . import warpedlmm
 import argparse
-import testing
+from . import testing
 import pandas
 from numpy.testing import Tester
-import util
-import fastlmm_interface as fastlmm
+from . import util
+from . import fastlmm_interface as fastlmm
 import numpy as np
-import stepwise
+from . import stepwise
 import matplotlib.pyplot as plt
 
 if __name__ == '__main__':

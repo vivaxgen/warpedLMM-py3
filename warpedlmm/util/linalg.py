@@ -76,7 +76,7 @@ def force_F_ordered(A):
     """
     if A.flags['F_CONTIGUOUS']:
         return A
-    print "why are your arrays not F order?"
+    print("why are your arrays not F order?")
     return np.asfortranarray(A)
 
 # def jitchol(A, maxtries=5):
@@ -102,7 +102,7 @@ def jitchol(A, maxtries=5):
     else:
         diagA = np.diag(A)
         if np.any(diagA <= 0.):
-            raise linalg.LinAlgError, "not pd: non-positive diagonal elements"
+            raise linalg.LinAlgError("not pd: non-positive diagonal elements")
         jitter = diagA.mean() * 1e-6
         while maxtries > 0 and np.isfinite(jitter):
             try:
@@ -111,7 +111,7 @@ def jitchol(A, maxtries=5):
                 jitter *= 10
             finally:
                 maxtries -= 1
-        raise linalg.LinAlgError, "not positive definite, even with jitter."
+        raise linalg.LinAlgError("not positive definite, even with jitter.")
     import traceback
     try: raise
     except:
@@ -225,12 +225,12 @@ def mdot(*args):
 
 def _mdot_r(a, b):
     """Recursive helper for mdot"""
-    if type(a) == types.TupleType:
+    if type(a) == tuple:
         if len(a) > 1:
             a = mdot(*a)
         else:
             a = a[0]
-    if type(b) == types.TupleType:
+    if type(b) == tuple:
         if len(b) > 1:
             b = mdot(*b)
         else:
@@ -305,7 +305,7 @@ def pca(Y, input_dim):
 
     """
     if not np.allclose(Y.mean(axis=0), 0.0):
-        print "Y is not zero mean, centering it locally (GPy.util.linalg.pca)"
+        print("Y is not zero mean, centering it locally (GPy.util.linalg.pca)")
 
         # Y -= Y.mean(axis=0)
 
@@ -389,7 +389,7 @@ def ppca_missing_data_at_random(Y, Q, iters=100):
 #         #Ycentered = mu
 #         W = np.linalg.solve(madot(exp_x.T,exp_x) + Sigma, madot(exp_x.T, Ycentered))
 #         nu = (((Ycentered - madot(exp_x, W))**2).sum(0) + madot(W.T,madot(Sigma,W)).sum(0)).sum()/N
-        for csi, (mask, index) in enumerate(cs.iteritems()):
+        for csi, (mask, index) in enumerate(cs.items()):
             mask = ~np.array(mask)
             Sigma2[index, :, :] = nu * np.linalg.inv(diag.add(W2[:,mask].dot(W2[:,mask].T), nu))
             #X[index,:] = madot((Sigma[csi]/nu),madot(W,Ycentered[index].T))[:,0]
@@ -402,7 +402,7 @@ def ppca_missing_data_at_random(Y, Q, iters=100):
             mu[d] = (Y[~Y.mask[:,d], d] - X[~Y.mask[:,d]].dot(W[:, d])).mean()
         Ycentered = (Y - mu)
         nu3 = 0.
-        for cri, (mask, index) in enumerate(cr.iteritems()):
+        for cri, (mask, index) in enumerate(cr.items()):
             mask = ~np.array(mask)
             W2[:,index] = np.linalg.solve(X[mask].T.dot(X[mask]) + Sigma[mask].sum(0), madot(X[mask].T, Ycentered[mask,index]))[:,None]
             W2[:,index] = np.linalg.solve(X.T.dot(X) + Sigma.sum(0), madot(X.T, Ycentered[:,index]))
@@ -586,7 +586,7 @@ def symmetrify(A, upper=False):
 def symmetrify_murray(A):
     A += A.T
     nn = A.shape[0]
-    A[[range(nn), range(nn)]] /= 2.0
+    A[[list(range(nn)), list(range(nn))]] /= 2.0
 
 def cholupdate(L, x):
     """

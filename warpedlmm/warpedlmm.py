@@ -16,9 +16,9 @@
 import numpy as np
 import scipy as sp
 # import GPy
-import util.transformations as transformations
-from util.warping_functions import TanhWarpingFunction_d
-from util.linalg import pdinv
+from . import util.transformations as transformations
+from .util.warping_functions import TanhWarpingFunction_d
+from .util.linalg import pdinv
 np.random.seed(123)
 
 class WarpedLMM(object):
@@ -27,7 +27,7 @@ class WarpedLMM(object):
         # self.Y_untransformed = Y
 
         if len(np.unique(self.Y_untransformed)) < self.Y_untransformed.size:
-            print "Two or more individuals have the same phenotype value. If the data is censored, an appropriate censorship model is needed before the data is passed to WarpedLMM."
+            print("Two or more individuals have the same phenotype value. If the data is censored, an appropriate censorship model is needed before the data is passed to WarpedLMM.")
 
         self.Y_untransformed.flags.writeable = False
         self.Y = self.Y_untransformed
@@ -121,7 +121,7 @@ class WarpedLMM(object):
             self.K_inv, _, _, self.log_det_K = pdinv(self.K) # TODO cache 1-kernel case
             self.alpha = np.dot(self.K_inv, self.Y)
         except np.linalg.LinAlgError:
-            print "Warning: adding constant jitter (you can turn it off with model.jitter=0.0)"
+            print("Warning: adding constant jitter (you can turn it off with model.jitter=0.0)")
             self.jitter = 1e-4
 
 
@@ -194,10 +194,10 @@ class WarpedLMM(object):
                 params.append(self._get_params())
                 NLLs.append(self._f(params[-1]))
                 if messages == 1:
-                    print "Optimization restart %d/%d, f: %.4f" % (i+1, num_restarts, NLLs[-1])
+                    print("Optimization restart %d/%d, f: %.4f" % (i+1, num_restarts, NLLs[-1]))
             except Exception:
                 if messages == 1:
-                    print "Optimization restart %d/%d: Failed (LinalgError)" % (i+1, num_restarts)
+                    print("Optimization restart %d/%d: Failed (LinalgError)" % (i+1, num_restarts))
             self.randomize()
 
         self._set_params(params[np.argmin(NLLs)])
@@ -217,11 +217,11 @@ class WarpedLMM(object):
         cols.extend([max(float_len, len(header[i])) for i in range(1, len(header))])
         cols = np.array(cols) + 5
         header_string = ["{h:^{col}}".format(h=header[i], col=cols[i]) for i in range(len(cols))]
-        header_string = map(lambda x: '|'.join(x), [header_string])
+        header_string = ['|'.join(x) for x in [header_string]]
         separator = '-' * len(header_string[0])
         xx = self._get_params()
         gradient = self._f_prime(xx)
-        print '\n'.join([header_string[0], separator])
+        print('\n'.join([header_string[0], separator]))
         for i, p in enumerate(self.params_ordering):
             xx = xx.copy()
             xx[i] += step
@@ -237,7 +237,7 @@ class WarpedLMM(object):
             g = '%.6f' % gradient[i]
             ng = '%.6f' % float(numerical_gradient)
             grad_string = "{0:<{c0}}|{1:^{c1}}|{2:^{c2}}|{3:^{c3}}|{4:^{c4}}".format(p, r, d, g, ng, c0=cols[0], c1=cols[1], c2=cols[2], c3=cols[3], c4=cols[4])
-            print grad_string
+            print(grad_string)
 
     # def predict(self, Xnew, which_parts='all', full_cov=False, pred_init=None):
     #     # normalize X values

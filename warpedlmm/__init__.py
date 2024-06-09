@@ -15,8 +15,8 @@
 
 from numpy.testing import Tester
 from nose.tools import nottest
-import testing
-from stepwise import warped_stepwise as stepwise
+from . import testing
+from .stepwise import warped_stepwise as stepwise
 
 @nottest
 def tests():

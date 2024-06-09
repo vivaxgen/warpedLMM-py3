@@ -14,9 +14,9 @@
 
 
 import numpy as np
-from warpedlmm import WarpedLMM
-import util.qvalue as qvalue
-import fastlmm_interface as fastlmm
+from .warpedlmm import WarpedLMM
+from . import util.qvalue as qvalue
+from . import fastlmm_interface as fastlmm
 
 def warped_stepwise(Y, X=None, K=None, covariates=None, num_restarts=1, max_covariates=10, qv_cutoff=None, pv_cutoff=5e-8):
     # Xt = X.copy()
@@ -69,7 +69,7 @@ def warped_stepwise(Y, X=None, K=None, covariates=None, num_restarts=1, max_cova
         estimated_h2s.append(h2)
 
         status = "Iteration: {0}, significant SNPs: {1}, included SNPs: {2},  heritability: {3:.4f}, f: {4}".format(iterations, significant.sum(), len(included), estimated_h2s[-1], likelihoods[-1])
-        print status
+        print(status)
 
         if candidate_sign > cutoff or len(included) >= max_covariates:
             converged = True

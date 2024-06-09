@@ -41,7 +41,7 @@ class ModelTests(unittest.TestCase):
                                                                num_restarts=1,
                                                                qv_cutoff=0.05,
                                                                pv_cutoff=None)
-        print estimated_h2
+        print(estimated_h2)
         self.assertTrue(np.allclose(estimated_h2, 0.5, atol=5e-2))
 
     def test_stepwise(self):
@@ -55,7 +55,7 @@ class ModelTests(unittest.TestCase):
                                                                num_restarts=1,
                                                                qv_cutoff=0.5,
                                                                pv_cutoff=None)
-        print estimated_h2
+        print(estimated_h2)
         self.assertTrue(np.allclose(estimated_h2, 0.5, atol=5e-2))
 
 class LoaderTests(unittest.TestCase):
