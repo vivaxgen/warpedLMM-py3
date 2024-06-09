@@ -59,6 +59,9 @@ if __name__ == '__main__':
         results_file_name = options.phenotype_file.replace('.txt', '')
         results_file_name += "_warpedlmm_results.txt"
     else:
+        import pathlib
+        outdir = pathlib.Path(options.out_dir)
+        outdir.mkdir(exist_ok=True)
         results_file_name = options.out_dir + "/warpedlmm_results.txt"
 
     util.write_results_to_file(snp_data, pv, results_file_name)
