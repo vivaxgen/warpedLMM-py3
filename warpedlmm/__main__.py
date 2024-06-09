@@ -62,7 +62,7 @@ if __name__ == '__main__':
         import pathlib
         outdir = pathlib.Path(options.out_dir)
         outdir.mkdir(exist_ok=True)
-        results_file_name = options.out_dir + "/warpedlmm_results.txt"
+        results_file_name = options.out_dir + "/warpedlmm_results.feather"
 
     util.write_results_to_file(snp_data, pv, results_file_name)
 

@@ -42,4 +42,4 @@ def write_results_to_file(snp_data, pv, results_filename):
 
     assert np.all(results.index == snp_data.sid) and np.all(results['p-value'] == pv), "the pvalues and/or SNP ids are not in order in the output file"
 
-    results.to_csv(results_filename)
+    results.to_feather(results_filename)
