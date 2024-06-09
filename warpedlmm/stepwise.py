@@ -68,7 +68,7 @@ def warped_stepwise(Y, X=None, K=None, covariates=None, num_restarts=1, max_cova
         # h2 = m.params['sigma_g']/m.params['sigma_e']
         estimated_h2s.append(h2)
 
-        status = "Iteration: {0}, significant SNPs: {1}, included SNPs: {2},  heritability: {3:.4f}, f: {4}".format(iterations, significant.sum(), len(included), estimated_h2s[-1], likelihoods[-1])
+        status = "Iteration: {0}, significant SNPs: {1}, included SNPs: {2},  heritability: {3:.4f}, f: {4}".format(iterations, significant.sum(), len(included), estimated_h2s[-1][0], likelihoods[-1])
         print(status)
 
         if candidate_sign > cutoff or len(included) >= max_covariates:
