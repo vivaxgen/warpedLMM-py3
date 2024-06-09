@@ -17,7 +17,7 @@ from . import warpedlmm
 import argparse
 from . import testing
 import pandas
-from numpy.testing import Tester
+#from numpy.testing import Tester
 from . import util
 from . import fastlmm_interface as fastlmm
 import numpy as np

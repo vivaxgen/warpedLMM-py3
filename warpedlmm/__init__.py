@@ -13,11 +13,11 @@
 # limitations under the License.
 
 
-from numpy.testing import Tester
+#from numpy.testing import Tester
 from nose.tools import nottest
 from . import testing
 from .stepwise import warped_stepwise as stepwise
 
-@nottest
-def tests():
-    Tester(testing).test(verbose=10)
+#@nottest
+#def tests():
+#    Tester(testing).test(verbose=10)

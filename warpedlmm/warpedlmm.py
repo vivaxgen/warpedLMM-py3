@@ -16,7 +16,7 @@
 import numpy as np
 import scipy as sp
 # import GPy
-from . import util.transformations as transformations
+from .util import transformations
 from .util.warping_functions import TanhWarpingFunction_d
 from .util.linalg import pdinv
 np.random.seed(123)
