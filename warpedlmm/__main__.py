@@ -81,6 +81,12 @@ if __name__ == '__main__':
             pheno_file_name = options.out_dir + "/warpedlmm_pheno.txt"
             trafo_file_name = options.out_dir + "/warpedlmm_transformation.png"
 
-        np.savetxt(pheno_file_name, np.concatenate((np.array(snp_data.iid, dtype='|S15'), y_pheno), axis=1), fmt='%s')
+        #import IPython; IPython.embed()
+        #np.savetxt(pheno_file_name, np.concatenate((np.array(snp_data.iid, dtype='|S15'), y_pheno), axis=1), fmt='%s')
+        import pandas as pd
+        df = pd.DataFrame(snp_data.iid, columns=['fid', 'sid'])
+        df['pheno'] = y_pheno
+        df.to_csv(pheno_file_name, index=False, header=False, sep='\t')
+
         m.plot_warping()
         plt.savefig(trafo_file_name)
