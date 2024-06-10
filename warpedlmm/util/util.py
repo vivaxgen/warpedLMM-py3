@@ -1,12 +1,20 @@
 import pysnptools.util.pheno 
-from pysnptools.snpreader.bed import Bed
+from pysnptools.snpreader import Bed, Ped
 import pysnptools.util as srutil
 import numpy as np
 import pandas
 
 def load_data(snp_file, pheno_file, covar_file):
     # Load SNP data
-    snp_reader = Bed(snp_file)
+    snp_file, ext_file = snp_file[:-4], snp_file[-4:]
+
+    match ext_file:
+        case '.bed':
+            snp_reader = Bed(snp_file)
+        case '.ped':
+            snp_reader = Ped(snp_file)
+        case _:
+            raise ValueError('wrong extension for input SNP file')
 
     # Load phenotype
     pheno = pysnptools.util.pheno.loadPhen(pheno_file)
@@ -33,13 +41,13 @@ def load_data(snp_file, pheno_file, covar_file):
     return snp_data, pheno, covar, X, Y, K
 
 def write_results_to_file(snp_data, pv, results_filename):
-    results = pandas.DataFrame(index=snp_data.sid, columns=['chromosome', 'genetic distance', 'position', 'p-value'])
+    results = pandas.DataFrame(index=snp_data.sid, columns=['Chr', 'ChrPos', 'Dist', 'PValue'])
 
-    results['chromosome'] = snp_data.pos[:, 0]
-    results['genetic distance'] = snp_data.pos[:, 1]
-    results['position'] = snp_data.pos[:, 2]
-    results['p-value'] = pv[:, None]
+    results['Chr'] = snp_data.pos[:, 0]
+    results['Dist'] = snp_data.pos[:, 1]
+    results['ChrPos'] = snp_data.pos[:, 2]
+    results['PValue'] = pv[:, None]
 
-    assert np.all(results.index == snp_data.sid) and np.all(results['p-value'] == pv), "the pvalues and/or SNP ids are not in order in the output file"
+    assert np.all(results.index == snp_data.sid) and np.all(results['PValue'] == pv), "the pvalues and/or SNP ids are not in order in the output file"
 
     results.to_feather(results_filename)
