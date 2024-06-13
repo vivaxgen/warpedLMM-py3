@@ -27,10 +27,12 @@ import matplotlib.pyplot as plt
 if __name__ == '__main__':
     usage = 'usage: warpedlmm snp_file phenotype_file'
     parser = argparse.ArgumentParser(usage=usage)
-    parser.add_argument('snp_file', help='file containing the SNP data (only .bed PLINK files are supported for now)')
+    parser.add_argument('snp_file', help='file containing the SNP data (only .bed/.ped PLINK files are supported for now)')
     parser.add_argument('phenotype_file',  help='phenotype file in csv format (one sample per row)')
     parser.add_argument('--test', dest='run_test', action='store_true', default=False, help='check that the warping is working by artificially transforming the phenotype (it computes exp(phenotype)) (default: False)')
     parser.add_argument('--covariates', dest='covariates', action='store', type=str, default=None, help='covariates file (optional)')
+    parser.add_argument('--k0-snp-file', default=None,
+                        help='file containing SNP data for similarity matrix (only .bed/.ped)')
     parser.add_argument('--save', dest='save', action='store_true', default=False, help='save transformed phenotype to file. A "_WarpedLMM" is appended to the original phenotype filename. (default: False)')
     parser.add_argument('--random_restarts', dest='random_restarts', action='store', default=3, type=int, help='number of random restarts')
     parser.add_argument('--qvalue_cutoff', dest='qv_cutoff', action='store', default=None, type=float, help='q-value cutoff for inclusion of large effect loci in the model (by default the model uses a p-value cutoff at 5e-8, see --pvalue_cutoff)')
@@ -42,7 +44,7 @@ if __name__ == '__main__':
     
     options = parser.parse_args()
 
-    snp_data, pheno, covar, X, Y, K = util.load_data(options.snp_file, options.phenotype_file, options.covariates)
+    snp_data, pheno, covar, X, Y, K = util.load_data(options.snp_file, options.phenotype_file, options.covariates, options.k0_snp_file)
 
     if options.run_test:
         Y = np.exp(Y)
@@ -53,7 +55,6 @@ if __name__ == '__main__':
                                                            pv_cutoff=options.pv_cutoff)
 
     pv, h2 = fastlmm.assoc_scan(y_pheno.copy(), X, covariates=covar, K=K)
-
     
     if options.out_dir is None:
         results_file_name = options.phenotype_file.replace('.txt', '')
@@ -62,7 +63,7 @@ if __name__ == '__main__':
         import pathlib
         outdir = pathlib.Path(options.out_dir)
         outdir.mkdir(exist_ok=True)
-        results_file_name = options.out_dir + "/warpedlmm_results.feather"
+        results_file_name = options.out_dir + "/gwas_results.feather"
 
     util.write_results_to_file(snp_data, pv, results_file_name)
 
