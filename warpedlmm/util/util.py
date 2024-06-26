@@ -72,4 +72,6 @@ def write_results_to_file(snp_data, pv, results_filename):
 
     assert np.all(results.index == snp_data.sid) and np.all(results['PValue'] == pv), "the pvalues and/or SNP ids are not in order in the output file"
 
+    results.sort_values(by='PValue', inplace=True)
+    results['warped'] = 1
     results.to_feather(results_filename)
