@@ -48,7 +48,7 @@ def warped_stepwise(Y, X=None, K=None, covariates=None, num_restarts=1, max_cova
 
         #import panama.core.testing as testing
         # pv_lmm_panama = testing.interface(X.copy(), y_pheno.copy(), K.copy(), covariates)[0].flatten()
-        pv_lmm, h2 = fastlmm.assoc_scan(y_pheno.copy(), X.copy(), K=K.copy(), covariates=covariates)
+        pv_lmm, h2 = fastlmm.assoc_scan(y_pheno.copy(), X.copy(), K=K.copy() if K else None, covariates=covariates)
 
         if qv_cutoff is not None:
             qv_lmm = qvalue.estimate(pv_lmm)

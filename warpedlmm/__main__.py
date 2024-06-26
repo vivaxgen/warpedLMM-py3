@@ -49,6 +49,9 @@ if __name__ == '__main__':
     if options.run_test:
         Y = np.exp(Y)
 
+    if options.k0_snp_file is None:
+        K = None
+
     y_pheno, m, _, estimated_h2 = stepwise.warped_stepwise(Y, X, K, covariates=covar,
                                                            max_covariates=options.max_covariates, num_restarts=options.random_restarts,
                                                            qv_cutoff=options.qv_cutoff,
